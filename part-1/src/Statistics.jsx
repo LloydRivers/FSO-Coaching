@@ -1,9 +1,9 @@
 import React from "react";
 import StatisticLine from "./StatisticLine";
 
-const Statistics = ({ good, bad, neutral, totalFeedback }) => {
+const Statistics = ({ good, bad, neutral, totalFeedback, testId }) => {
   return (
-    <table>
+    <table data-testid={testId}>
       <tbody>
         <StatisticLine text="good" value={good} />
         <StatisticLine text="neutral" value={neutral} />

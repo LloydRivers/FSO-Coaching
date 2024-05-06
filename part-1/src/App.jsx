@@ -41,6 +41,7 @@ const App = () => {
 
           <h1>statistics</h1>
           <Statistics
+            testId="statistics"
             good={good}
             bad={bad}
             neural={neutral}
@@ -49,18 +50,26 @@ const App = () => {
         </>
       ) : (
         <>
-          <h1>give feedback</h1>
-          <Button handleClick={handleGoodClick} text="good" testId="good" />
+          <h1 data-testid="heading">give feedback</h1>
+          <Button
+            handleClick={handleGoodClick}
+            text="good"
+            testId="no-feedback-good"
+          />
           <Button
             handleClick={handleNeutralClick}
             text="neutral"
             testId="neutral"
           />
-          <Button handleClick={handleBadClick} text="bad" testId="bad" />
+          <Button
+            handleClick={handleBadClick}
+            text="bad"
+            testId="no-feedback-bad"
+          />
 
           <br />
 
-          <h1>statistics</h1>
+          <h2 data-testid="statistics-heading">statistics</h2>
           <p>no feedback given</p>
         </>
       )}

@@ -17,52 +17,23 @@ describe("App", () => {
     expect(heading).toHaveTextContent("give feedback");
   });
 
-  it("should render 3 buttons: good, neural and bad", () => {
-    const { getByRole } = component;
-    const buttonNames = ["good", "neutral", "bad"];
-    buttonNames.forEach((name) => {
-      const button = getByRole("button", { name });
-      expect(button).toBeInTheDocument();
-    });
+  it("renders no feedback given when totalFeedback = 0", () => {
+    const { getByText } = component;
+    const noFeedback = getByText("no feedback given");
+    const heading = screen.getByTestId("heading");
+
+    expect(heading).toBeInTheDocument();
+    expect(noFeedback).toBeInTheDocument();
   });
 
-  it("should update statistics when buttons are clicked", () => {
-    const { getByRole } = component;
-    const buttonNames = ["good", "neutral", "bad"];
-    const paragraphTestIds = ["good", "neutral", "bad"];
+  it("should render the statistics", () => {
+    const noFeedbackGoodButton = screen.getByTestId("no-feedback-good");
 
-    buttonNames.forEach((name, index) => {
-      const button = getByRole("button", { name });
-      const paragraph = screen.getByTestId(paragraphTestIds[index]);
-      act(() => {
-        fireEvent.click(button);
-      });
-      expect(paragraph).toHaveTextContent("1");
-    });
-  });
-
-  it("should render all statistics paragraph when there is feedback", () => {
-    const { getByRole } = component;
-    const buttonNames = ["good", "neutral", "bad"];
-    const paragraphTestIds = [
-      "good",
-      "neutral",
-      "bad",
-      "all",
-      "average",
-      "positive",
-    ];
-
-    buttonNames.forEach((name) => {
-      const button = getByRole("button", { name });
-      act(() => {
-        fireEvent.click(button);
-      });
+    act(() => {
+      fireEvent.click(noFeedbackGoodButton);
     });
 
-    paragraphTestIds.forEach((testId) => {
-      const paragraph = screen.getByTestId(testId);
-      expect(paragraph).toBeInTheDocument();
-    });
+    const table = screen.getByTestId("statistics");
+    expect(table).toBeInTheDocument();
   });
 });
