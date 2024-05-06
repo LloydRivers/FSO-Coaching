@@ -40,7 +40,12 @@ const App = () => {
           <br />
 
           <h1>statistics</h1>
-          <Statistics good={good} bad={bad} neural={neutral} />
+          <Statistics
+            good={good}
+            bad={bad}
+            neural={neutral}
+            totalFeedback={totalFeedback}
+          />
         </>
       ) : (
         <>
