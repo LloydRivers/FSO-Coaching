@@ -25,19 +25,39 @@ const App = () => {
 
   return (
     <>
-      <h1>give feedback</h1>
-      <button onClick={handleGoodClick}>good</button>
-      <button onClick={handleNeutralClick}>neutral</button>
-      <button onClick={handleBadClick}>bad</button>
+      {totalFeedback > 0 ? (
+        <>
+          <h1>give feedback</h1>
+          <button onClick={handleGoodClick}>good</button>
+          <button onClick={handleNeutralClick}>neutral</button>
+          <button onClick={handleBadClick}>bad</button>
 
-      <br />
+          <br />
 
-      <Statistics text="good" value={good} />
-      <Statistics text="neutral" value={neutral} />
-      <Statistics text="bad" value={bad} />
-      <Statistics text="all" value={totalFeedback} />
-      <Statistics text="average" value={(good - bad) / totalFeedback} />
-      <Statistics text="positive" value={(good / totalFeedback) * 100 + " %"} />
+          <h1>statistics</h1>
+          <Statistics text="good" value={good} />
+          <Statistics text="neutral" value={neutral} />
+          <Statistics text="bad" value={bad} />
+          <Statistics text="all" value={totalFeedback} />
+          <Statistics text="average" value={(good - bad) / totalFeedback} />
+          <Statistics
+            text="positive"
+            value={`${(good / totalFeedback) * 100 || 0} %`}
+          />
+        </>
+      ) : (
+        <>
+          <h1>give feedback</h1>
+          <button onClick={handleGoodClick}>good</button>
+          <button onClick={handleNeutralClick}>neutral</button>
+          <button onClick={handleBadClick}>bad</button>
+
+          <br />
+
+          <h1>statistics</h1>
+          <p>no feedback given</p>
+        </>
+      )}
     </>
   );
 };

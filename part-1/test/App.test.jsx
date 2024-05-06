@@ -41,8 +41,9 @@ describe("App", () => {
     });
   });
 
-  it("should render all statistics paragraphs", () => {
-    const { getByTestId } = component;
+  it("should render all statistics paragraph when there is feedback", () => {
+    const { getByRole } = component;
+    const buttonNames = ["good", "neutral", "bad"];
     const paragraphTestIds = [
       "good",
       "neutral",
@@ -52,8 +53,15 @@ describe("App", () => {
       "positive",
     ];
 
+    buttonNames.forEach((name) => {
+      const button = getByRole("button", { name });
+      act(() => {
+        fireEvent.click(button);
+      });
+    });
+
     paragraphTestIds.forEach((testId) => {
-      const paragraph = getByTestId(testId);
+      const paragraph = screen.getByTestId(testId);
       expect(paragraph).toBeInTheDocument();
     });
   });
