@@ -26,7 +26,7 @@ describe("App", () => {
     });
   });
 
-  it("should call event handlers", () => {
+  it("should update statistics when buttons are clicked", () => {
     const { getByRole } = component;
     const buttonNames = ["good", "neutral", "bad"];
     const paragraphTestIds = ["good", "neutral", "bad"];
@@ -38,6 +38,23 @@ describe("App", () => {
         fireEvent.click(button);
       });
       expect(paragraph).toHaveTextContent("1");
+    });
+  });
+
+  it("should render all statistics paragraphs", () => {
+    const { getByTestId } = component;
+    const paragraphTestIds = [
+      "good",
+      "neutral",
+      "bad",
+      "all",
+      "average",
+      "positive",
+    ];
+
+    paragraphTestIds.forEach((testId) => {
+      const paragraph = getByTestId(testId);
+      expect(paragraph).toBeInTheDocument();
     });
   });
 });
