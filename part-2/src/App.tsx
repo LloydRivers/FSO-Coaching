@@ -8,6 +8,9 @@ const App = () => {
     { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
   ]);
 
+  const [filteredPersons, setFilteredPersons] = useState([...persons]);
+  const [filter, setFilter] = useState("");
+
   const [newPerson, setNewPerson] = useState({
     name: "",
     number: "",
@@ -40,8 +43,20 @@ const App = () => {
     setNewPerson({ ...newPerson, number: event.target.value });
   };
 
+  const handleFilter: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    setFilter(event.target.value);
+    setFilteredPersons(
+      persons.filter((person) =>
+        person.name.toLowerCase().includes(event.target.value.toLowerCase())
+      )
+    );
+  };
+
   return (
     <div>
+      <div>
+        filter shown with <input value={filter} onChange={handleFilter} />
+      </div>
       <h2>Phonebook</h2>
       <form onSubmit={addPerson}>
         <div>
@@ -55,7 +70,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map((person) => (
+      {filteredPersons.map((person) => (
         <div key={person.name}>
           {person.name} {person.number}
         </div>
