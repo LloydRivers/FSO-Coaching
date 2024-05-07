@@ -21,10 +21,18 @@ const App = () => {
     Array.from({ length: anecdotes.length }, () => 0)
   );
 
+  const [showMostVoted, setShowMostVoted] = useState(
+    points.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    ) > 0
+  );
+
   const handlePoints = () => {
     const copy = [...points];
     copy[selected] += 1;
     setPoints(copy);
+    setShowMostVoted(true);
   };
 
   const handleNextAnecdote = () => {
@@ -39,11 +47,19 @@ const App = () => {
       <button onClick={handleNextAnecdote}>next anecdote</button>
       <h1> Anecdote of the day</h1>
       <div data-testid="anecdote">{anecdotes[selected]}</div>
+      {/* 
+If you arwe reading this, the below code an extra I wanted to add. 
+If there are no votes yet, the most voted anecdote should not be displayed.
 
-      <h2>Anecdote with most votes</h2>
-      <div data-testid="most-voted">
-        {anecdotes[points.indexOf(Math.max(...points))]}
-      </div>
+*/}
+      {showMostVoted && (
+        <>
+          <h2>Anecdote with most votes</h2>
+          <div data-testid="most-voted">
+            {anecdotes[points.indexOf(Math.max(...points))]}
+          </div>
+        </>
+      )}
     </>
   );
 };
