@@ -48,7 +48,7 @@ const App = () => {
       <h1> Anecdote of the day</h1>
       <div data-testid="anecdote">{anecdotes[selected]}</div>
       {/* 
-If you arwe reading this, the below code an extra I wanted to add. 
+If you are reading this, the below code an extra I wanted to add. 
 If there are no votes yet, the most voted anecdote should not be displayed.
 
 */}
