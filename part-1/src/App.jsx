@@ -37,7 +37,13 @@ const App = () => {
         vote
       </button>
       <button onClick={handleNextAnecdote}>next anecdote</button>
+      <h1> Anecdote of the day</h1>
       <div data-testid="anecdote">{anecdotes[selected]}</div>
+
+      <h2>Anecdote with most votes</h2>
+      <div data-testid="most-voted">
+        {anecdotes[points.indexOf(Math.max(...points))]}
+      </div>
     </>
   );
 };
