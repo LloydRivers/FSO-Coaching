@@ -11,6 +11,7 @@ type CourseProps = {
 };
 
 const Course = ({ course }: { course: CourseProps }) => {
+  const total = course.parts.reduce((sum, part) => sum + part.exercises, 0);
   return (
     <div>
       <h1>{course.name}</h1>
@@ -21,6 +22,9 @@ const Course = ({ course }: { course: CourseProps }) => {
           </li>
         ))}
       </ul>
+      <p>
+        <strong>total of {total} exercises</strong>
+      </p>
     </div>
   );
 };
