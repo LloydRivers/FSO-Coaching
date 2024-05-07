@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Filter from "./Filter";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
+import { getAll, create, update, deletePerson } from "./services/persons";
+
+type Person = {
+  name: string;
+  number: string;
+  id: number;
+};
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-123456", id: 1 },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ]);
+  const [persons, setPersons] = useState<Person[]>([]);
 
   const [filteredPersons, setFilteredPersons] = useState([...persons]);
   const [filter, setFilter] = useState("");
@@ -19,7 +22,29 @@ const App = () => {
     number: "",
   });
 
-  const addPerson: React.FormEventHandler<HTMLFormElement> = (event) => {
+  const deletePersonById = async (id: number) => {
+    try {
+      await deletePerson(id);
+      setPersons(persons.filter((person) => person.id !== id));
+      setFilteredPersons(filteredPersons.filter((person) => person.id !== id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updatePerson = async (id: number, newPerson: Person) => {
+    try {
+      const data = await update(id, newPerson);
+      setPersons(persons.map((person) => (person.id !== id ? person : data)));
+      setFilteredPersons(
+        filteredPersons.map((person) => (person.id !== id ? person : data))
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addPerson: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
     if (persons.some((person) => person.name === newPerson.name)) {
       alert(`${newPerson.name} is already added to phonebook`);
@@ -28,14 +53,16 @@ const App = () => {
     const personObject = {
       name: newPerson.name,
       number: newPerson.number,
-      id: persons.length + 1,
     };
 
-    setPersons(persons.concat(personObject));
-    setNewPerson({
-      name: "",
-      number: "",
-    });
+    try {
+      const data = await create(personObject);
+      setPersons(persons.concat(data));
+      setFilteredPersons(persons.concat(data));
+      setNewPerson({ name: "", number: "" });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleName: React.ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -54,6 +81,16 @@ const App = () => {
       )
     );
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getAll();
+      setPersons(data);
+      setFilteredPersons(data);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div>
