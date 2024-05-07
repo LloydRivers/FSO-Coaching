@@ -1,30 +1,42 @@
-type Part = {
+type CoursePart = {
   name: string;
   exercises: number;
   id: number;
 };
 
-type CourseProps = {
-  id: number;
+type Course = {
   name: string;
-  parts: Part[];
+  id: number;
+  parts: CoursePart[];
 };
 
-const Course = ({ course }: { course: CourseProps }) => {
-  const total = course.parts.reduce((sum, part) => sum + part.exercises, 0);
+const Course = ({ courses }: { courses: Course[] }) => {
+  const name = courses[0].name;
+
   return (
     <div>
-      <h1>{course.name}</h1>
-      <ul>
-        {course.parts.map((part) => (
-          <li key={part.id}>
-            {part.name} {part.exercises}
-          </li>
-        ))}
-      </ul>
-      <p>
-        <strong>total of {total} exercises</strong>
-      </p>
+      <h1>{name}</h1>
+      {courses.map((course) => {
+        return (
+          <div key={course.id}>
+            <h2>{course.name}</h2>
+            <ul>
+              {course.parts.map((part) => {
+                return (
+                  <li key={part.id}>
+                    {part.name} {part.exercises}
+                  </li>
+                );
+              })}
+            </ul>
+            <p>
+              total of&nbsp;
+              {course.parts.reduce((carry, part) => carry + part.exercises, 0)}
+              &nbsp;exercises
+            </p>
+          </div>
+        );
+      })}
     </div>
   );
 };
