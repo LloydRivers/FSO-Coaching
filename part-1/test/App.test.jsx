@@ -14,7 +14,12 @@ describe("Anecdote component", () => {
   });
 
   it("should render a button", () => {
-    const button = screen.getByRole("button");
+    const button = screen.getByText("next anecdote");
+    expect(button).toBeInTheDocument();
+  });
+
+  it("should render a vote button", () => {
+    const button = screen.getByText("vote");
     expect(button).toBeInTheDocument();
   });
 });

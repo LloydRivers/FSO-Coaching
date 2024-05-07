@@ -13,16 +13,30 @@ const App = () => {
   ];
 
   const [selected, setSelected] = useState(0);
+  /*
+  If you are here reading this from my Reddit training group, please see: 
+  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from
+  */
+  const [points, setPoints] = useState(
+    Array.from({ length: anecdotes.length }, () => 0)
+  );
+
+  const handlePoints = () => {
+    const copy = [...points];
+    copy[selected] += 1;
+    setPoints(copy);
+  };
+
+  const handleNextAnecdote = () => {
+    setSelected(Math.floor(Math.random() * anecdotes.length));
+  };
 
   return (
     <>
-      <button
-        onClick={() =>
-          setSelected(Math.floor(Math.random() * anecdotes.length))
-        }
-      >
-        next anecdote
+      <button onClick={handlePoints} data-testid="vote">
+        vote
       </button>
+      <button onClick={handleNextAnecdote}>next anecdote</button>
       <div data-testid="anecdote">{anecdotes[selected]}</div>
     </>
   );
