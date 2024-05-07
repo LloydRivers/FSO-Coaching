@@ -16,6 +16,7 @@ const App = () => {
 
   const [filteredPersons, setFilteredPersons] = useState([...persons]);
   const [filter, setFilter] = useState("");
+  const [render, setRender] = useState(false);
 
   const [newPerson, setNewPerson] = useState({
     name: "",
@@ -42,36 +43,49 @@ const App = () => {
     }
   };
 
-  const updatePerson = async (id: number, newPerson: Person) => {
-    try {
-      const data = await update(id, newPerson);
-      setPersons(persons.map((person) => (person.id !== id ? person : data)));
-      setFilteredPersons(
-        filteredPersons.map((person) => (person.id !== id ? person : data))
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const addPerson: React.FormEventHandler<HTMLFormElement> = async (event) => {
+    // First we prevent the default form submission behavior
     event.preventDefault();
-    if (persons.some((person) => person.name === newPerson.name)) {
-      alert(`${newPerson.name} is already added to phonebook`);
-      return;
-    }
-    const personObject = {
+
+    // Then we check if the person already exists in the phonebook
+    const exists = persons.find((person) => person.name === newPerson.name);
+
+    // We create a new person object with the name and number from the form
+    const person = {
       name: newPerson.name,
       number: newPerson.number,
     };
 
-    try {
-      const data = await create(personObject);
-      setPersons(persons.concat(data));
-      setFilteredPersons(persons.concat(data));
-      setNewPerson({ name: "", number: "" });
-    } catch (error) {
-      console.log(error);
+    // If the person already exists, we ask the user if they want to update the number
+    if (exists) {
+      if (
+        window.confirm(
+          `${newPerson.name} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        try {
+          // If the user confirms, we update the person's number
+          await update(exists.id, person);
+          setNewPerson({ name: "", number: "" });
+          // We set the render state to true to trigger a re-render
+          setRender(!render);
+          return;
+        } catch (error) {}
+      } else {
+        // If the user cancels, we return early and clear the form
+        setNewPerson({ name: "", number: "" });
+        return;
+      }
+    } else {
+      try {
+        // If we get here it means the person doesn't exist in the phonebook and the code is self explanatory
+        const data = await create(person);
+        setPersons(persons.concat(data));
+        setFilteredPersons(persons.concat(data));
+        setNewPerson({ name: "", number: "" });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -100,7 +114,7 @@ const App = () => {
     };
 
     fetchData();
-  }, []);
+  }, [render]);
 
   return (
     <div>
