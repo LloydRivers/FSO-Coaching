@@ -105,14 +105,12 @@ const App = () => {
       )
     );
   };
-
+  const fetchData = async () => {
+    const data = await getAll();
+    setPersons(data);
+    setFilteredPersons(data);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getAll();
-      setPersons(data);
-      setFilteredPersons(data);
-    };
-
     fetchData();
   }, [render]);
 
