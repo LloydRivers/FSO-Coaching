@@ -23,6 +23,16 @@ const App = () => {
   });
 
   const deletePersonById = async (id: number) => {
+    const personToDelete = persons.find((person) => person.id === id);
+
+    if (!personToDelete) {
+      return;
+    }
+
+    if (!window.confirm(`Delete ${personToDelete.name}?`)) {
+      return;
+    }
+
     try {
       await deletePerson(id);
       setPersons(persons.filter((person) => person.id !== id));
@@ -107,7 +117,10 @@ const App = () => {
         newPerson={newPerson}
       />
       <h2>Numbers</h2>
-      <Persons filteredPersons={filteredPersons} />
+      <Persons
+        filteredPersons={filteredPersons}
+        deletePersonById={deletePersonById}
+      />
     </div>
   );
 };
