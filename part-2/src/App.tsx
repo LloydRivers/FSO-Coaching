@@ -3,8 +3,7 @@ import { Root } from "./types";
 import { useState, useEffect } from "react";
 const App = () => {
   const ALL_COUNTRIES = "https://studies.cs.helsinki.fi/restcountries/api/all";
-  // const GET_BY_NAME =
-  //   "https://studies.cs.helsinki.fi/restcountries/api/name/germany";
+  const GET_BY_NAME = "https://studies.cs.helsinki.fi/restcountries/api/name";
 
   const [countries, setCountries] = useState<Root[]>([]);
   const [filteredCountries, setFilteredCountries] = useState<Root[]>([]);
@@ -71,7 +70,12 @@ const App = () => {
             </div>
           ) : filteredCountries.length > 0 ? (
             filteredCountries.map((country) => (
-              <div key={country.name.common}>{country.name.common}</div>
+              <div key={country.name.common}>
+                <p>{country.name.common}</p>
+                <button onClick={() => setFilteredCountries([country])}>
+                  show
+                </button>
+              </div>
             ))
           ) : (
             <p>{errorMessage}</p>
