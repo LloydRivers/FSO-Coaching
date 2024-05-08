@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Filter from "./Filter";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
+import Notification from "./Notification";
 import { getAll, create, update, deletePerson } from "./services/persons";
 
 type Person = {
@@ -12,16 +12,24 @@ type Person = {
 };
 
 const App = () => {
+  // Array of persons
   const [persons, setPersons] = useState<Person[]>([]);
-
+  // Array of persons that match the filter
   const [filteredPersons, setFilteredPersons] = useState([...persons]);
   const [filter, setFilter] = useState("");
+  // State to trigger a re-render
   const [render, setRender] = useState(false);
-
+  // State controlling the form input fields
   const [newPerson, setNewPerson] = useState({
     name: "",
     number: "",
   });
+  // State to hold the newly added persons name for the notification
+  const [addedPerson, setAddedPerson] = useState<string | null>(null);
+
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [error, setError] = useState<boolean>(false);
+  const [isAdded, setIsAdded] = useState<boolean>(false);
 
   const deletePersonById = async (id: number) => {
     const personToDelete = persons.find((person) => person.id === id);
@@ -36,9 +44,10 @@ const App = () => {
 
     try {
       await deletePerson(id);
-      setPersons(persons.filter((person) => person.id !== id));
-      setFilteredPersons(filteredPersons.filter((person) => person.id !== id));
+      setRender(!render);
     } catch (error) {
+      setError(true);
+      setErrorMessage(`Person ${personToDelete.name} was already deleted`);
       console.log(error);
     }
   };
@@ -66,11 +75,16 @@ const App = () => {
         try {
           // If the user confirms, we update the person's number
           await update(exists.id, person);
-          setNewPerson({ name: "", number: "" });
           // We set the render state to true to trigger a re-render
           setRender(!render);
+          // We clear the form
+          setNewPerson({ name: "", number: "" });
           return;
-        } catch (error) {}
+        } catch (error) {
+          console.log("We should be in this catch block");
+          setErrorMessage(`Person ${newPerson.name} was already deleted`);
+          console.log(error);
+        }
       } else {
         // If the user cancels, we return early and clear the form
         setNewPerson({ name: "", number: "" });
@@ -79,10 +93,11 @@ const App = () => {
     } else {
       try {
         // If we get here it means the person doesn't exist in the phonebook and the code is self explanatory
-        const data = await create(person);
-        setPersons(persons.concat(data));
-        setFilteredPersons(persons.concat(data));
+        await create(person);
         setNewPerson({ name: "", number: "" });
+        setAddedPerson(newPerson.name);
+        setIsAdded(true);
+        setRender(!render);
       } catch (error) {
         console.log(error);
       }
@@ -106,9 +121,16 @@ const App = () => {
     );
   };
   const fetchData = async () => {
-    const data = await getAll();
-    setPersons(data);
-    setFilteredPersons(data);
+    try {
+      const data = await getAll();
+      setPersons(data);
+      setFilteredPersons(data);
+    } catch (error) {
+      console.log("Error fetching data");
+      setError(true);
+      setErrorMessage("Error fetching data");
+      console.log(error);
+    }
   };
   useEffect(() => {
     fetchData();
@@ -117,6 +139,19 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {error && <Notification message={errorMessage} />}
+      {isAdded && (
+        <p
+          style={{
+            backgroundColor: "lightgreen",
+            padding: "1rem",
+            borderRadius: "0.5rem",
+            border: "1px solid green",
+          }}
+        >
+          Added {addedPerson} to the phonebook
+        </p>
+      )}
       <div>
         <Filter filter={filter} handleFilter={handleFilter} />
       </div>
