@@ -4,6 +4,7 @@ import PersonForm from "./PersonForm";
 import Persons from "./Persons";
 import Notification from "./Notification";
 import { getAll, create, update, deletePerson } from "./services/persons";
+import "./style.css";
 
 type Person = {
   name: string;
@@ -81,7 +82,6 @@ const App = () => {
           setNewPerson({ name: "", number: "" });
           return;
         } catch (error) {
-          console.log("We should be in this catch block");
           setErrorMessage(`Person ${newPerson.name} was already deleted`);
           console.log(error);
         }
@@ -141,16 +141,7 @@ const App = () => {
       <h2>Phonebook</h2>
       {error && <Notification message={errorMessage} />}
       {isAdded && (
-        <p
-          style={{
-            backgroundColor: "lightgreen",
-            padding: "1rem",
-            borderRadius: "0.5rem",
-            border: "1px solid green",
-          }}
-        >
-          Added {addedPerson} to the phonebook
-        </p>
+        <p className="added-person">Added {addedPerson} to the phonebook</p>
       )}
       <div>
         <Filter filter={filter} handleFilter={handleFilter} />
