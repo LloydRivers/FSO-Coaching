@@ -5,6 +5,11 @@ import { IWeatherData } from "./weatherTypes";
 
 const App = () => {
   const ALL_COUNTRIES = "https://studies.cs.helsinki.fi/restcountries/api/all";
+  /*
+  Reddit students: I have committed the API key in the .env file to show how to set it up in Vite.
+
+  Everyone else: The key has been deactivated on the OpenWeatherMap API, so you will need to sign up for your own key at https://home.openweathermap.org/users/sign_up
+  */
   const API_KEY = import.meta.env.VITE_API_KEY;
 
   const [countries, setCountries] = useState<Root[]>([]);
