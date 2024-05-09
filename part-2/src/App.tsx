@@ -10,7 +10,7 @@ const App = () => {
 
   Everyone else: The key has been deactivated on the OpenWeatherMap API, so you will need to sign up for your own key at https://home.openweathermap.org/users/sign_up
   */
-  const API_KEY = import.meta.env.VITE_API_KEY;
+  const API_KEY = import.meta.env.VITE_API_KEY; // you needs this line to access the .env file
 
   const [countries, setCountries] = useState<Root[]>([]);
   const [filteredCountries, setFilteredCountries] = useState<Root[]>([]);
