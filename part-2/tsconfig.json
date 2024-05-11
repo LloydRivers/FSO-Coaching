@@ -20,6 +20,13 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": [
+    "src",
+    "countries/App.tsx",
+    "countries/main.tsx",
+    "countries/types.ts",
+    "countries/vite-env.d.ts",
+    "countries/weatherTypes.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
