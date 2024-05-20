@@ -1,3 +1,4 @@
+import { AxiosError, AxiosResponse } from "axios";
 import { useState, useEffect } from "react";
 import Filter from "./Filter";
 import PersonForm from "./PersonForm";
@@ -84,7 +85,6 @@ const App = () => {
           return;
         } catch (error) {
           setErrorMessage(`Person ${newPerson.name} was already deleted`);
-          console.log(error);
         }
       } else {
         // If the user cancels, we return early and clear the form
@@ -104,6 +104,15 @@ const App = () => {
           setIsAdded(false);
         }, 5000);
       } catch (error) {
+        if (isAxiosError(error)) {
+          const axiosError = error as AxiosError;
+          setError(true);
+          setErrorMessage((axiosError.response as AxiosResponse).data.message);
+
+          setTimeout(() => {
+            setError(false);
+          }, 5000);
+        }
         console.log(error);
       }
     }
@@ -140,6 +149,10 @@ const App = () => {
   useEffect(() => {
     fetchData();
   }, [render]);
+
+  const isAxiosError = (error: any): error is AxiosError => {
+    return (error as AxiosError).isAxiosError !== undefined;
+  };
 
   return (
     <div>
