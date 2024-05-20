@@ -9,7 +9,7 @@ import "./style.css";
 type Person = {
   name: string;
   number: string;
-  id: number;
+  _id: string;
 };
 
 const App = () => {
@@ -32,8 +32,8 @@ const App = () => {
   const [error, setError] = useState<boolean>(false);
   const [isAdded, setIsAdded] = useState<boolean>(false);
 
-  const deletePersonById = async (id: number) => {
-    const personToDelete = persons.find((person) => person.id === id);
+  const deletePersonById = async (id: string) => {
+    const personToDelete = persons.find((person) => person._id === id);
 
     if (!personToDelete) {
       return;
@@ -64,6 +64,7 @@ const App = () => {
     const person = {
       name: newPerson.name,
       number: newPerson.number,
+      _id: "",
     };
 
     // If the person already exists, we ask the user if they want to update the number
@@ -75,7 +76,7 @@ const App = () => {
       ) {
         try {
           // If the user confirms, we update the person's number
-          await update(exists.id, person);
+          await update(exists._id, person);
           // We set the render state to true to trigger a re-render
           setRender(!render);
           // We clear the form

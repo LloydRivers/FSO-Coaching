@@ -1,21 +1,21 @@
 type Person = {
   name: string;
   number: string;
-  id: number;
+  _id: string;
 };
 
 type PersonsProps = {
   filteredPersons: Person[];
-  deletePersonById: (id: number) => void;
+  deletePersonById: (id: string) => void;
 };
 
 const Persons = ({ filteredPersons, deletePersonById }: PersonsProps) => {
   return (
     <>
       {filteredPersons.map((person) => (
-        <div key={person.id}>
+        <div key={person._id}>
           {person.name} {person.number}
-          <button onClick={() => deletePersonById(person.id)}>delete</button>
+          <button onClick={() => deletePersonById(person._id)}>delete</button>
         </div>
       ))}
     </>

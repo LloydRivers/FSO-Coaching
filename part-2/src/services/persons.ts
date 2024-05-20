@@ -4,7 +4,7 @@ const baseUrl = "https://fso-coaching-part-3.onrender.com/api/persons";
 type Person = {
   name: string;
   number: string;
-  id: number;
+  _id: string;
 };
 
 type NewPerson = Omit<Person, "id">;
@@ -29,7 +29,7 @@ const create = async (newObject: NewPerson) => {
   }
 };
 
-const update = async (id: number, newObject: NewPerson) => {
+const update = async (id: string, newObject: NewPerson) => {
   try {
     const response = await axios.put(`${baseUrl}/${id}`, newObject);
     return response.data;
@@ -39,7 +39,7 @@ const update = async (id: number, newObject: NewPerson) => {
   }
 };
 
-const deletePerson = async (id: number) => {
+const deletePerson = async (id: string) => {
   try {
     await axios.delete(`${baseUrl}/${id}`);
   } catch (error) {
