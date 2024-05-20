@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import Filter from "./Filter";
 import PersonForm from "./PersonForm";
@@ -15,6 +16,7 @@ type Person = {
 const App = () => {
   // Array of persons
   const [persons, setPersons] = useState<Person[]>([]);
+  console.log(persons);
   // Array of persons that match the filter
   const [filteredPersons, setFilteredPersons] = useState([...persons]);
   const [filter, setFilter] = useState("");
@@ -139,7 +141,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      {error && <Notification message={errorMessage} />}
+      {/* {error && <Notification message={errorMessage} />}
       {isAdded && (
         <p className="added-person">Added {addedPerson} to the phonebook</p>
       )}
@@ -158,7 +160,7 @@ const App = () => {
       <Persons
         filteredPersons={filteredPersons}
         deletePersonById={deletePersonById}
-      />
+      /> */}
     </div>
   );
 };

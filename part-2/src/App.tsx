@@ -98,6 +98,10 @@ const App = () => {
         setAddedPerson(newPerson.name);
         setIsAdded(true);
         setRender(!render);
+
+        setTimeout(() => {
+          setIsAdded(false);
+        }, 5000);
       } catch (error) {
         console.log(error);
       }

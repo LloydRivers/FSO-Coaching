@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "/api/persons";
+const baseUrl = "https://fso-coaching-part-3.onrender.com/api/persons";
 
 type Person = {
   name: string;
