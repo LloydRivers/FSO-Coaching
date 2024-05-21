@@ -151,6 +151,7 @@ const App = () => {
   }, [render]);
 
   const isAxiosError = (error: any): error is AxiosError => {
+    console.log("axios error");
     return (error as AxiosError).isAxiosError !== undefined;
   };
 
