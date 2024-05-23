@@ -23,3 +23,29 @@ export const mostBlogs = (blogs: Blog[]): { author: string; blogs: number } => {
 
   return { author, blogs: blogCount[author] };
 };
+
+export const mostLikes = (blogs: Blog[]): { author: string; likes: number } => {
+  // Comments to explain the reduce function.
+  const mostLikedBlog = blogs.reduce(
+    (max, blog) => {
+      /*
+      We initialize the accumulator with an object that has an author property and a likes property.
+
+      We know that on every loop the blog object will have an author and likes property (see the data in the testData/data.ts file).
+
+      Loop one (author: "John Doe")
+
+      is 150 > 0? Yes, so return the blog object. Since we are returning the blog object, the accumulator will be updated with the blog object.
+      */
+      return blog.likes > max.likes ? blog : max;
+    },
+    { author: "", likes: 0 } as Blog // <-- Initial accumulator value.
+    // loop 1: { author: "John Doe", likes: 150 }
+    // This repeats for every blog object in the array. Hopefully this makes sense.
+  );
+
+  return {
+    author: mostLikedBlog.author,
+    likes: mostLikedBlog.likes,
+  };
+};

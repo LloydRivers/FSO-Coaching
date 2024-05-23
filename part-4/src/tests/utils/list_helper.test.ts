@@ -3,6 +3,7 @@ import {
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 } from "../../utils/list_helper";
 import data from "../../testData/data";
 
@@ -37,6 +38,13 @@ describe("List Helper", () => {
     it("should return the author with the most blogs", () => {
       const result = mostBlogs(data);
       expect(result).toEqual({ author: "John Doe", blogs: 3 });
+    });
+  });
+
+  describe("mostLikes function", () => {
+    it("should return the author with the most likes", () => {
+      const result = mostLikes(data);
+      expect(result).toEqual({ author: "Emily Johnson", likes: 300 });
     });
   });
 });
