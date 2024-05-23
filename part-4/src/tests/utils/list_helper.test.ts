@@ -1,8 +1,14 @@
 import { dummy } from "../../utils/list_helper";
-import { IBlog } from "../../models/blog";
+import { Blog } from "../../models/blog";
 
 test("dummy returns one", () => {
-  const blogs: IBlog[] = [];
+  const testBlog: Blog = {
+    title: "dummy",
+    author: "dummy",
+    url: "dummy",
+    likes: 0,
+  };
+  const blogs = [testBlog];
   const result = dummy(blogs);
   expect(result).toBe(1);
 });

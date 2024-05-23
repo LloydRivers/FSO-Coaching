@@ -1,5 +1,5 @@
-import { IBlog } from "../models/blog";
+import { Blog } from "../models/blog";
 
-export const dummy = (blogs: IBlog[]): number => {
-  return 1;
+export const dummy = (blogs: Blog[]): number => {
+  return blogs.length;
 };

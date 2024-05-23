@@ -1,11 +1,13 @@
 import { Schema, model, Document } from "mongoose";
 
-interface IBlog extends Document {
+export interface Blog {
   title: string;
   author: string;
   url: string;
   likes: number;
 }
+
+interface IBlog extends Document, Blog {}
 
 const blogSchema = new Schema<IBlog>({
   title: { type: String, required: true },
