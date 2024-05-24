@@ -1,4 +1,5 @@
 module.exports = {
+  globalTeardown: "./src/tests/teardown.ts",
   testMatch: ["**/tests/**/*.test.ts"],
   testTimeout: 30000,
   preset: "ts-jest",
