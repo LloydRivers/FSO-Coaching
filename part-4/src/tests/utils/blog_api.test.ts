@@ -56,4 +56,22 @@ describe("Blogs", () => {
       console.error("Error adding new blog:", error);
     }
   });
+
+  test("a specific blog can be viewed", async () => {
+    const blogs = await api.get("/api/blogs");
+    const blogToView = blogs.body[0];
+
+    const result = await api.get(`/api/blogs/${blogToView.id}`);
+    expect(result.body).toEqual(blogToView);
+  });
+
+  test("a blog can be deleted", async () => {
+    const blogs = await api.get("/api/blogs");
+    const blogToDelete = blogs.body[0];
+
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+    const blogsAtEnd = await api.get("/api/blogs");
+    expect(blogsAtEnd.body).toHaveLength(blogs.body.length - 1);
+  });
 });
