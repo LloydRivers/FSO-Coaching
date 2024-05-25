@@ -14,9 +14,14 @@ const requestLogger = (
   next();
 };
 
-const unknownEndpoint = (request: Request, response: Response) => {
-  logger.error("Unknown endpoint:", request.path);
-  response.status(404).send({ error: "unknown endpoint" });
+const unknownEndpoint = (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  const error = new Error(`Not Found - ${request.originalUrl}`);
+  response.status(404);
+  next(error);
 };
 
 const errorHandler = (error: Error, request: Request, response: Response) => {

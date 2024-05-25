@@ -108,6 +108,11 @@ describe("Blogs", () => {
     expect(blogsAtEnd.body).toHaveLength(blogs.body.length - 1);
   });
 
+  test("delete route returns 404 if blog does not exist", async () => {
+    const response = await api.delete("/api/blogs/123456");
+    expect(response.status).toBe(404);
+  });
+
   test("a blog can be updated", async () => {
     const blogs = await api.get("/api/blogs");
     const blogToUpdate = blogs.body[0];
