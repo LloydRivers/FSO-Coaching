@@ -60,6 +60,7 @@ describe("Blogs", () => {
   });
 
   test("a blog without content is not added", async () => {
+    // This is 4.12*
     const newBlog: Blog = {
       title: "",
       author: "",
