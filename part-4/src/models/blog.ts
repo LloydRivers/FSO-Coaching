@@ -17,6 +17,7 @@ const blogSchema = new Schema<IBlog>({
 });
 
 blogSchema.set("toJSON", {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   transform: (_doc: Document, ret: Record<string, any>) => {
     ret.id = ret._id.toString();
     delete ret._id;
