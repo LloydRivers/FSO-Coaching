@@ -61,7 +61,7 @@ router.delete(
       }
       res.status(204).end();
     } catch (error) {
-      next(error);
+      return next(error);
     }
   }
 );
