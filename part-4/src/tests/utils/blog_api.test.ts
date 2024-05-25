@@ -57,10 +57,26 @@ describe("Blogs", () => {
     }
   });
 
+  test("returns id not _id", async () => {
+    const newBlog: Blog = {
+      title: "Test Blog",
+      author: "John Doe",
+      url: "https://example.com/test-blog",
+      likes: 100,
+    };
+
+    try {
+      const response = await api.post("/api/blogs").send(newBlog);
+      expect(response.body.id).toBeDefined();
+      expect(response.body._id).not.toBeDefined();
+    } catch (error) {
+      console.error("Error adding new blog:", error);
+    }
+  });
+
   test("a specific blog can be viewed", async () => {
     const blogs = await api.get("/api/blogs");
     const blogToView = blogs.body[0];
-
     const result = await api.get(`/api/blogs/${blogToView.id}`);
     expect(result.body).toEqual(blogToView);
   });
@@ -68,9 +84,7 @@ describe("Blogs", () => {
   test("a blog can be deleted", async () => {
     const blogs = await api.get("/api/blogs");
     const blogToDelete = blogs.body[0];
-
     await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
-
     const blogsAtEnd = await api.get("/api/blogs");
     expect(blogsAtEnd.body).toHaveLength(blogs.body.length - 1);
   });

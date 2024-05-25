@@ -51,4 +51,19 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+router.delete(
+  "/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const deletedBlog = await Blog.findByIdAndDelete(req.params.id);
+      if (!deletedBlog) {
+        return res.status(404).json({ error: "Blog not found" });
+      }
+      res.status(204).end();
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 export default router;
