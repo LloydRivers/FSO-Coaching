@@ -4,7 +4,7 @@ export interface Blog {
   title: string;
   author: string;
   url: string;
-  likes: number;
+  likes?: number;
 }
 
 interface IBlog extends Document, Blog {}

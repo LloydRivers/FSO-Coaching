@@ -44,6 +44,21 @@ describe("Blogs", () => {
     }
   });
 
+  test("default likes is 0", async () => {
+    const newBlog: Blog = {
+      title: "Test Blog",
+      author: "John Doe",
+      url: "https://example.com/test-blog",
+    };
+
+    try {
+      const response = await api.post("/api/blogs").send(newBlog);
+      expect(response.body.likes).toBe(0);
+    } catch (error) {
+      console.error("Error adding new blog:", error);
+    }
+  });
+
   test("a blog without content is not added", async () => {
     const newBlog: Blog = {
       title: "",
