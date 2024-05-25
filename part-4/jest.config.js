@@ -16,4 +16,8 @@ module.exports = {
       tsconfig: "tsconfig.json",
     },
   },
+
+  collectCoverage: true,
+  collectCoverageFrom: ["src/**/*.{ts,js}", "!src/**/*.d.ts"],
+  coverageReporters: ["text", "html"],
 };
