@@ -28,6 +28,7 @@ module.exports = {
     "!**/index.ts",
     "!**/logger.ts",
     "!**/middleware.ts",
+    "!**/app.ts",
   ],
   coverageReporters: ["text", "html"],
 };
