@@ -18,6 +18,13 @@ module.exports = {
   },
 
   collectCoverage: true,
-  collectCoverageFrom: ["src/**/*.{ts,js}", "!src/**/*.d.ts"],
+  collectCoverageFrom: [
+    "src/**/*.{ts,js}",
+    "!src/**/*.d.ts",
+    "!**/*.test.ts",
+    "!**/*.spec.ts",
+    "!**/node_modules/**",
+    "!**/.eslintrc.js",
+  ],
   coverageReporters: ["text", "html"],
 };
