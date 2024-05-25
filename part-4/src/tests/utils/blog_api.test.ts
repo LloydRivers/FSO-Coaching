@@ -29,6 +29,7 @@ describe("Blogs", () => {
     };
 
     try {
+      const intitialBlogs = await api.get("/api/blogs");
       const response = await api.post("/api/blogs").send(newBlog);
       expect(response.status).toBe(200);
       expect(response.headers["content-type"]).toMatch(/application\/json/);
@@ -36,6 +37,8 @@ describe("Blogs", () => {
       expect(response.body.author).toBe(newBlog.author);
       expect(response.body.url).toBe(newBlog.url);
       expect(response.body.likes).toBe(newBlog.likes);
+      const finalBlogs = await api.get("/api/blogs");
+      expect(finalBlogs.body).toHaveLength(intitialBlogs.body.length + 1);
     } catch (error) {
       console.error("Error adding new blog:", error);
     }
