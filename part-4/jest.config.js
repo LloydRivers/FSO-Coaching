@@ -25,6 +25,9 @@ module.exports = {
     "!**/*.spec.ts",
     "!**/node_modules/**",
     "!**/.eslintrc.js",
+    "!**/index.ts",
+    "!**/logger.ts",
+    "!**/middleware.ts",
   ],
   coverageReporters: ["text", "html"],
 };
