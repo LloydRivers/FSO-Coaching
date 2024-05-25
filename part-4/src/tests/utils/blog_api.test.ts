@@ -107,4 +107,14 @@ describe("Blogs", () => {
     const blogsAtEnd = await api.get("/api/blogs");
     expect(blogsAtEnd.body).toHaveLength(blogs.body.length - 1);
   });
+
+  test("a blog can be updated", async () => {
+    const blogs = await api.get("/api/blogs");
+    const blogToUpdate = blogs.body[0];
+    const updatedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 };
+    const response = await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedBlog);
+    expect(response.body.likes).toBe(updatedBlog.likes);
+  });
 });
