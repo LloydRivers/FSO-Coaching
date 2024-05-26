@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { Blog } from "../models/blog";
+import logger from "../utils/logger";
 
 const router = Router();
 
@@ -8,6 +9,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     const blogs = await Blog.find({});
     res.json(blogs);
   } catch (error) {
+    logger.error(error);
     next(error);
   }
 });
@@ -21,6 +23,7 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
     const savedBlog = await blog.save();
     res.json(savedBlog);
   } catch (error) {
+    logger.error(error);
     next(error);
   }
 });
@@ -33,6 +36,7 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     }
     res.json(blog);
   } catch (error) {
+    logger.error(error);
     next(error);
   }
 });
@@ -47,6 +51,7 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
     }
     res.json(updatedBlog);
   } catch (error) {
+    logger.error(error);
     next(error);
   }
 });
@@ -61,6 +66,7 @@ router.delete(
       }
       res.status(204).end();
     } catch (error) {
+      logger.error(error);
       return next(error);
     }
   }
