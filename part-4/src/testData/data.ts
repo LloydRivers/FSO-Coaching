@@ -1,4 +1,4 @@
-import { Blog } from "../models/blog";
+import { Blog } from "../types";
 
 const data: Blog[] = [
   {

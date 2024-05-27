@@ -1,4 +1,4 @@
-import { Blog } from "../models/blog";
+import { Blog } from "../types";
 
 export const dummy = (blogs: Blog[]): number => {
   return blogs.length;
