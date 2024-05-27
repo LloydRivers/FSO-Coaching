@@ -62,8 +62,5 @@ module.exports = {
   coverageReporters: ["text", "html"], // Generate coverage reports in text and HTML format
 
   // Ignore specific paths from coverage collection (i.e the older blog API test file)
-  modulePathIgnorePatterns: [
-    "<rootDir>/dist/",
-    "/src/tests/utils/old_blog_api.test.ts",
-  ],
+  modulePathIgnorePatterns: ["<rootDir>/dist/"],
 };
