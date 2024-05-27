@@ -34,11 +34,8 @@ module.exports = {
     "^.+\\.ts$": "ts-jest", // Use "ts-jest" to transform TypeScript files
   },
 
-  // Global configuration for "ts-jest"
-  globals: {
-    "ts-jest": {
-      tsconfig: "tsconfig.json", // Path to the TypeScript configuration file
-    },
+  transform: {
+    "^.+\\.tsx?$": ["ts-jest", { tsconfig: "tsconfig.json" }],
   },
 
   // Enable collecting code coverage information

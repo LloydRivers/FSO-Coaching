@@ -11,13 +11,9 @@ afterAll(() => {
 
 describe("Blogs", () => {
   test("blogs are returned as json", async () => {
-    try {
-      const response = await api.get("/api/blogs");
-      expect(response.headers["content-type"]).toMatch(/application\/json/);
-      expect(response.status).toBe(200);
-    } catch (error) {
-      console.error("Error fetching blogs:", error);
-    }
+    const response = await api.get("/api/blogs");
+    expect(response.headers["content-type"]).toMatch(/application\/json/);
+    expect(response.status).toBe(200);
   });
 
   test("A valid blog can be added", async () => {
@@ -28,20 +24,16 @@ describe("Blogs", () => {
       likes: 100,
     };
 
-    try {
-      const intitialBlogs = await api.get("/api/blogs");
-      const response = await api.post("/api/blogs").send(newBlog);
-      expect(response.status).toBe(200);
-      expect(response.headers["content-type"]).toMatch(/application\/json/);
-      expect(response.body.title).toBe(newBlog.title);
-      expect(response.body.author).toBe(newBlog.author);
-      expect(response.body.url).toBe(newBlog.url);
-      expect(response.body.likes).toBe(newBlog.likes);
-      const finalBlogs = await api.get("/api/blogs");
-      expect(finalBlogs.body).toHaveLength(intitialBlogs.body.length + 1);
-    } catch (error) {
-      console.error("Error adding new blog:", error);
-    }
+    const intitialBlogs = await api.get("/api/blogs");
+    const response = await api.post("/api/blogs").send(newBlog);
+    expect(response.status).toBe(200);
+    expect(response.headers["content-type"]).toMatch(/application\/json/);
+    expect(response.body.title).toBe(newBlog.title);
+    expect(response.body.author).toBe(newBlog.author);
+    expect(response.body.url).toBe(newBlog.url);
+    expect(response.body.likes).toBe(newBlog.likes);
+    const finalBlogs = await api.get("/api/blogs");
+    expect(finalBlogs.body).toHaveLength(intitialBlogs.body.length + 1);
   });
 
   test("default likes is 0", async () => {
@@ -51,12 +43,8 @@ describe("Blogs", () => {
       url: "https://example.com/test-blog",
     };
 
-    try {
-      const response = await api.post("/api/blogs").send(newBlog);
-      expect(response.body.likes).toBe(0);
-    } catch (error) {
-      console.error("Error adding new blog:", error);
-    }
+    const response = await api.post("/api/blogs").send(newBlog);
+    expect(response.body.likes).toBe(0);
   });
 
   test("a blog without content is not added", async () => {
@@ -68,12 +56,8 @@ describe("Blogs", () => {
       likes: 100,
     };
 
-    try {
-      const response = await api.post("/api/blogs").send(newBlog);
-      expect(response.status).toBe(400);
-    } catch (error) {
-      console.error("Error adding new blog:", error);
-    }
+    const response = await api.post("/api/blogs").send(newBlog);
+    expect(response.status).toBe(400);
   });
 
   test("returns id not _id", async () => {
@@ -84,13 +68,9 @@ describe("Blogs", () => {
       likes: 100,
     };
 
-    try {
-      const response = await api.post("/api/blogs").send(newBlog);
-      expect(response.body.id).toBeDefined();
-      expect(response.body._id).not.toBeDefined();
-    } catch (error) {
-      console.error("Error adding new blog:", error);
-    }
+    const response = await api.post("/api/blogs").send(newBlog);
+    expect(response.body.id).toBeDefined();
+    expect(response.body._id).not.toBeDefined();
   });
 
   test("a specific blog can be viewed", async () => {
