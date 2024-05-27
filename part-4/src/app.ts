@@ -1,3 +1,4 @@
+import "express-async-errors";
 import config from "./utils/config";
 import express from "express";
 const app = express();
