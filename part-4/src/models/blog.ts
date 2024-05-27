@@ -1,13 +1,5 @@
 import { Schema, model, Document } from "mongoose";
-
-export interface Blog {
-  title: string;
-  author: string;
-  url: string;
-  likes?: number;
-}
-
-interface IBlog extends Document, Blog {}
+import { IBlog } from "../types";
 
 const blogSchema = new Schema<IBlog>({
   title: { type: String, required: true },
