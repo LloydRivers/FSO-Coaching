@@ -1,10 +1,12 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { Blog } from "../models/blog";
 import logger from "../utils/logger";
 
-const router = Router();
-
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+export const getBlogs = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const blogs = await Blog.find({});
     res.json(blogs);
@@ -12,9 +14,13 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     logger.error(error);
     next(error);
   }
-});
+};
 
-router.post("/", async (req: Request, res: Response, next: NextFunction) => {
+export const postBlog = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     if (!req.body.title || !req.body.url || !req.body.author) {
       return res.status(400).json({ error: "title, author, or url missing" });
@@ -26,9 +32,13 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
     logger.error(error);
     next(error);
   }
-});
+};
 
-router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+export const getBlog = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const blog = await Blog.findById(req.params.id);
     if (!blog) {
@@ -39,9 +49,13 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     logger.error(error);
     next(error);
   }
-});
+};
 
-router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
+export const putBlog = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -54,22 +68,23 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
     logger.error(error);
     next(error);
   }
-});
+};
 
-router.delete(
-  "/:id",
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const deletedBlog = await Blog.findByIdAndDelete(req.params.id);
-      if (!deletedBlog) {
-        return res.status(404).json({ error: "Blog not found" });
-      }
-      res.status(204).end();
-    } catch (error) {
-      logger.error(error);
-      return next(error);
+export const deleteBlog = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const deletedBlog = await Blog.findByIdAndDelete(req.params.id);
+    if (!deletedBlog) {
+      return res.status(404).json({ error: "Blog not found" });
     }
+    res.status(204).end();
+  } catch (error) {
+    logger.error(error);
+    return next(error);
   }
-);
+};
 
-export default router;
+export default { getBlogs, postBlog, getBlog, putBlog, deleteBlog };
