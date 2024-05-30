@@ -24,16 +24,35 @@ const unknownEndpoint = (
   next(error);
 };
 
-const errorHandler = (error: Error, request: Request, response: Response) => {
-  logger.error(error.message);
+const errorHandler = (
+  error: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  logger.error(
+    "error handler: ",
+    req.method,
+    req.url,
+    error,
+    `>${error.name}<`,
+    error.message
+  );
 
-  if (error.name === "CastError") {
-    logger.error("CastError:", error.message);
-    response.status(400).send({ error: "malformatted id" });
-  } else {
-    logger.error("Error:", error.message);
-    response.status(500).end();
+  switch (error.name) {
+    case "ValidationError":
+      return res.status(400).json({ message: error.message });
+    case "CastError":
+      return res.status(400).json({ message: "malformed id" });
+    case "TypeError":
+      return res.status(400).json({ message: "malformed request" });
+    case "JsonWebTokenError":
+      return res.status(401).json({ message: "invalid token" });
+    case "MongoServerError":
+      return res.status(400).json({ message: "duplicate key error" });
   }
+
+  next(error);
 };
 
 export default { requestLogger, unknownEndpoint, errorHandler };

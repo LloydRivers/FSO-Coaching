@@ -40,5 +40,3 @@ export const deleteBlog = async (req: Request, res: Response) => {
   }
   res.status(204).end();
 };
-
-export default { getBlogs, postBlog, getBlog, putBlog, deleteBlog };

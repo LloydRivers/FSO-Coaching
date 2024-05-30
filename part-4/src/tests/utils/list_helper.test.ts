@@ -30,6 +30,10 @@ describe("List Helper", () => {
         author: "Emily Johnson",
         url: "https://example.com/react-hooks",
         likes: 300,
+        user: {
+          ref: "User",
+          type: "6657945d8bafb97528c095d4",
+        },
       });
     });
   });

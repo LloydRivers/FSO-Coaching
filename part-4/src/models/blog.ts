@@ -1,11 +1,14 @@
 import { Schema, model, Document } from "mongoose";
-import { IBlog } from "../types";
 
-const blogSchema = new Schema<IBlog>({
+const blogSchema = new Schema({
   title: { type: String, required: true },
   author: { type: String, required: true },
   url: { type: String, required: true },
   likes: { type: Number, default: 0 },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 blogSchema.set("toJSON", {
@@ -17,6 +20,6 @@ blogSchema.set("toJSON", {
   },
 });
 
-const Blog = model<IBlog>("Blog", blogSchema);
+const Blog = model("Blog", blogSchema);
 
-export { Blog, IBlog };
+export { Blog };
