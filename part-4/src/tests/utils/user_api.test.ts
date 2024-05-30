@@ -53,3 +53,10 @@ test("creation fails with proper statuscode and message if username already take
   const usersAtEnd = await User.find({});
   expect(usersAtEnd).toHaveLength(usersAtStart.length);
 });
+
+test("returns all users", async () => {
+  const response = await api.get("/api/users");
+
+  expect(response.body).toHaveLength(1);
+  expect(response.body[0].username).toBe;
+});

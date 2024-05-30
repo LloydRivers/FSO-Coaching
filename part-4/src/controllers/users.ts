@@ -15,3 +15,8 @@ export const createUser = async (req: Request, res: Response) => {
   const savedUser = await user.save();
   res.status(201).json(savedUser);
 };
+
+export const getAllUsers = async (request: Request, response: Response) => {
+  const users = await User.find({});
+  response.json(users);
+};

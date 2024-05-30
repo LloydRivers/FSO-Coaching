@@ -21,7 +21,7 @@ describe("Blogs", () => {
     beforeEach(async () => {
       await User.create({
         username: "user1",
-        name: "User One",
+        name: "UserOne",
         password: "password",
       });
       await Model.create({
@@ -40,8 +40,8 @@ describe("Blogs", () => {
 
   test("A valid blog can be added", async () => {
     const newUser = new User({
-      username: "valid blog",
-      name: "Test User",
+      username: "validblog",
+      name: "TestUser",
       passwordHash: "password",
     });
     const savedUser = await newUser.save();
@@ -71,8 +71,8 @@ describe("Blogs", () => {
 
   test("default likes is 0", async () => {
     const newUser = new User({
-      username: "default likes",
-      name: "Test User",
+      username: "defaultlikes",
+      name: "TestUser",
       passwordHash: "password",
     });
     const newBlog: Blog = {
@@ -89,8 +89,8 @@ describe("Blogs", () => {
 
   test("a blog without content is not added", async () => {
     const newUser = new User({
-      username: "no content",
-      name: "Test User",
+      username: "nocontent",
+      name: "TestUser",
       passwordHash: "password",
     });
     // This is 4.12*
@@ -109,8 +109,8 @@ describe("Blogs", () => {
 
   test("returns id not _id", async () => {
     const newUser = new User({
-      username: "returns id",
-      name: "Test User",
+      username: "returnsid",
+      name: "TestUser",
       passwordHash: "password",
     });
     const newBlog: Blog = {
