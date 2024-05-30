@@ -1,7 +1,12 @@
 import { Schema, model, Document } from "mongoose";
 
 const userSchema = new Schema({
-  username: String,
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+    minlength: 3,
+  },
   name: String,
   passwordHash: String,
   blogs: [{ type: Schema.Types.ObjectId, ref: "Blog" }],
