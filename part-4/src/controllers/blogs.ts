@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { Blog } from "../models/blog";
+import { User } from "../models/user";
+import { BlogPost } from "../types";
 
 export const getBlogs = async (req: Request, res: Response) => {
   const blogs = await Blog.find({});
@@ -7,12 +9,33 @@ export const getBlogs = async (req: Request, res: Response) => {
 };
 
 export const postBlog = async (req: Request, res: Response) => {
-  if (!req.body.title || !req.body.url || !req.body.author) {
-    return res.status(400).json({ error: "title, author, or url missing" });
+  const body: BlogPost = req.body;
+
+  if (!body.title || !body.url) {
+    return res.status(400).json({ error: "title or url missing" });
   }
-  const blog = new Blog(req.body);
+
+  const user = await User.findById(body.user);
+
+  if (!user) {
+    return res.status(400).json({ error: "user not found" });
+  }
+
+  const blog = new Blog({
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes || 0,
+    user: user._id,
+  });
+
   const savedBlog = await blog.save();
-  res.json(savedBlog);
+
+  user.blogs = user.blogs.concat(savedBlog._id);
+
+  await user.save();
+
+  res.status(201).json(savedBlog);
 };
 
 export const getBlog = async (req: Request, res: Response) => {

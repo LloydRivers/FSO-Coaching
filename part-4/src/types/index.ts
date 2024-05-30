@@ -1,4 +1,4 @@
-import { Document, Schema } from "mongoose";
+import { Schema } from "mongoose";
 
 export interface Blog {
   title: string;
@@ -27,4 +27,12 @@ export interface User {
   name: string;
   passwordHash: string;
   blogs: string[];
+}
+
+export interface BlogPost {
+  title: string;
+  author: string;
+  url: string;
+  likes?: number;
+  user: string;
 }
