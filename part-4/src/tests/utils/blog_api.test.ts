@@ -1,4 +1,4 @@
-import mongoose, { Types, Schema } from "mongoose";
+import mongoose from "mongoose";
 import supertest from "supertest";
 import { Blog } from "../../types/";
 import { User } from "../../models/user";
@@ -6,7 +6,6 @@ import app from "../../app";
 import { Blog as Model } from "../../models/blog";
 
 const api = supertest(app);
-const userID = new Types.ObjectId();
 
 afterAll(() => {
   mongoose.connection.close();
@@ -59,7 +58,7 @@ describe("Blogs", () => {
 
     const response = await api.post("/api/blogs").send(newBlog);
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(201);
     expect(response.headers["content-type"]).toMatch(/application\/json/);
     expect(response.body.title).toBe(newBlog.title);
     expect(response.body.author).toBe(newBlog.author);
@@ -75,6 +74,7 @@ describe("Blogs", () => {
       name: "TestUser",
       passwordHash: "password",
     });
+    await newUser.save();
     const newBlog: Blog = {
       title: "Test Blog",
       author: "John Doe",
@@ -113,6 +113,8 @@ describe("Blogs", () => {
       name: "TestUser",
       passwordHash: "password",
     });
+
+    await newUser.save();
     const newBlog: Blog = {
       title: "Test Blog",
       author: "John Doe",
@@ -148,12 +150,36 @@ describe("Blogs", () => {
   });
 
   test("a blog can be updated", async () => {
-    const blogs = await api.get("/api/blogs");
-    const blogToUpdate = blogs.body[0];
-    const updatedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 };
+    // Create a new user
+    const newUserResponse = await api.post("/api/users").send({
+      username: "testuser",
+      name: "Test User",
+      password: "testpassword",
+    });
+    const newUser = newUserResponse.body;
+
+    // Create a new blog
+    const newBlogResponse = await api.post("/api/blogs").send({
+      title: "Test Blog",
+      author: "John Doe",
+      url: "https://example.com/test-blog",
+      likes: 100,
+      user: newUser.id,
+    });
+    const newBlog = newBlogResponse.body;
+
+    // Update the blog
+    const updatedBlogData = { ...newBlog, likes: newBlog.likes + 1 };
+
+    console.log("Updating Blog ID:", newBlog.id);
+    console.log("Updated Blog Data:", updatedBlogData);
+
     const response = await api
-      .put(`/api/blogs/${blogToUpdate.id}`)
-      .send(updatedBlog);
-    expect(response.body.likes).toBe(updatedBlog.likes);
+      .put(`/api/blogs/${newBlog.id}`)
+      .send(updatedBlogData);
+
+    console.log("Response:", response.body);
+
+    expect(response.body.likes).toBe(updatedBlogData.likes);
   });
 });

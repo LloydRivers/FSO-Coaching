@@ -17,6 +17,8 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 export const getAllUsers = async (request: Request, response: Response) => {
-  const users = await User.find({});
+  const users = await User.find({}).populate("blogs", {
+    title: 1,
+  });
   response.json(users);
 };

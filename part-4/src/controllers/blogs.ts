@@ -4,7 +4,9 @@ import { User } from "../models/user";
 import { BlogPost } from "../types";
 
 export const getBlogs = async (req: Request, res: Response) => {
-  const blogs = await Blog.find({});
+  const blogs = await Blog.find({}).populate("user", {
+    username: 1,
+  });
   res.json(blogs);
 };
 
