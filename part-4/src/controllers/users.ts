@@ -22,3 +22,22 @@ export const getAllUsers = async (request: Request, response: Response) => {
   });
   response.json(users);
 };
+
+export const editUser = async (request: Request, response: Response) => {
+  const { id } = request.params;
+  const { name } = request.body;
+
+  if (!id || !name) {
+    return response
+      .status(400)
+      .json({ error: "User ID and name are required" });
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(id, { name }, { new: true });
+
+  if (!updatedUser) {
+    return response.status(404).json({ error: "User not found" });
+  }
+
+  response.json(updatedUser);
+};
