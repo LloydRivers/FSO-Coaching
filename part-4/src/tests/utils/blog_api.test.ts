@@ -171,9 +171,6 @@ describe("Blogs", () => {
     // Update the blog
     const updatedBlogData = { ...newBlog, likes: newBlog.likes + 1 };
 
-    console.log("Updating Blog ID:", newBlog.id);
-    console.log("Updated Blog Data:", updatedBlogData);
-
     const response = await api
       .put(`/api/blogs/${newBlog.id}`)
       .send(updatedBlogData);
