@@ -20,6 +20,9 @@ const unknownEndpoint = (
   next: NextFunction
 ) => {
   const error = new Error(`Not Found - ${request.originalUrl}`);
+  logger.info(`Request Method: ${request.method}`);
+  logger.info(`Request URL: ${request.originalUrl}`);
+  logger.info(`Timestamp: ${new Date().toISOString()}`);
   response.status(404);
   next(error);
 };
@@ -50,6 +53,10 @@ const errorHandler = (
       return res.status(401).json({ message: "invalid token" });
     case "MongoServerError":
       return res.status(400).json({ message: "duplicate key error" });
+    case "JsonWebTokenError":
+      return res.status(401).json({ message: "invalid token" });
+    case "TokenExpiredError":
+      return res.status(401).json({ message: "token expired" });
   }
 
   next(error);

@@ -10,7 +10,7 @@ export async function seedDatabase() {
     await Blog.deleteMany({});
 
     for (const blog of data) {
-      const newBlog = { ...blog, user: userID }; // Set user directly as the generated userID
+      const newBlog = { ...blog, user: userID };
       await new Blog(newBlog).save();
     }
 

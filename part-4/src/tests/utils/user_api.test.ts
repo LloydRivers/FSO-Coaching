@@ -5,6 +5,8 @@ import app from "../../app";
 const api = supertest(app);
 
 beforeEach(async () => {
+  // We have to clear the database before each test, otherwise the tests will fail saying we already have a user with the username "root"
+  // The issue is, since the blogs are connected to the user, we can't delete the user without deleting the blogs. So you see the tests are tightly coupled.
   await User.deleteMany({});
 
   const passwordHash = await bcrypt.hash("sekret", 10);

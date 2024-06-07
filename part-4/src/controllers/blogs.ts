@@ -2,6 +2,15 @@ import { Request, Response } from "express";
 import { Blog } from "../models/blog";
 import { User } from "../models/user";
 import { BlogPost } from "../types";
+import jwt from "jsonwebtoken";
+
+const getTokenFrom = (req: Request) => {
+  const authorization = req.get("authorization");
+  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+    return authorization.substring(7);
+  }
+  return null;
+};
 
 export const getBlogs = async (req: Request, res: Response) => {
   const blogs = await Blog.find({}).populate("user", {
@@ -14,11 +23,20 @@ export const getBlogs = async (req: Request, res: Response) => {
 export const postBlog = async (req: Request, res: Response) => {
   const body: BlogPost = req.body;
 
+  const decodedToken = jwt.verify(
+    getTokenFrom(req) as string,
+    process.env.SECRET as string
+  );
+
+  if (!decodedToken || typeof decodedToken === "string") {
+    return res.status(401).json({ error: "token missing or invalid" });
+  }
+
   if (!body.title || !body.url) {
     return res.status(400).json({ error: "title or url missing" });
   }
 
-  const user = await User.findById(body.user);
+  const user = await User.findById(decodedToken.id);
 
   if (!user) {
     return res.status(400).json({ error: "user not found" });

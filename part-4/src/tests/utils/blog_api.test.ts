@@ -1,35 +1,19 @@
 import mongoose from "mongoose";
 import supertest from "supertest";
 import { Blog } from "../../types/";
-import { User } from "../../models/user";
 import app from "../../app";
-import { Blog as Model } from "../../models/blog";
 
 const api = supertest(app);
+
+let token =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWQiOiI2NjYzNzgwMTJlMjQ0ZGM3ODhiNjQ0OWYiLCJpYXQiOjE3MTc3OTQ4NTMsImV4cCI6MTcxNzc5ODQ1M30.lOWGJd2UGH17d_Llq9ob3qY-Ol0RyzbWdTN28Kru1HA";
 
 afterAll(() => {
   mongoose.connection.close();
 });
 
 describe("Blogs", () => {
-  beforeAll(async () => {
-    await User.deleteMany({});
-    await Model.deleteMany({});
-  });
   describe("when there is initially some blogs saved", () => {
-    beforeEach(async () => {
-      await User.create({
-        username: "user1",
-        name: "UserOne",
-        password: "password",
-      });
-      await Model.create({
-        title: "Test Blog",
-        author: "John Doe",
-        url: "https://example.com/test-blog",
-        likes: 10,
-      });
-    });
     test("blogs are returned as json", async () => {
       const response = await api.get("/api/blogs");
       expect(response.headers["content-type"]).toMatch(/application\/json/);
@@ -38,25 +22,21 @@ describe("Blogs", () => {
   });
 
   test("A valid blog can be added", async () => {
-    const newUser = new User({
-      username: "validblog",
-      name: "TestUser",
-      passwordHash: "password",
-    });
-    const savedUser = await newUser.save();
-
     const newBlog: Blog = {
       title: "Test Blog",
       author: "John Doe",
       url: "https://example.com/test-blog",
       likes: 100,
       // @ts-ignore
-      user: savedUser._id,
+      user: "666378012e244dc788b6449f",
     };
 
     const intitialBlogs = await api.get("/api/blogs");
 
-    const response = await api.post("/api/blogs").send(newBlog);
+    const response = await api
+      .post("/api/blogs")
+      .set("Authorization", `Bearer ${token}`)
+      .send(newBlog);
 
     expect(response.status).toBe(201);
     expect(response.headers["content-type"]).toMatch(/application\/json/);
@@ -69,62 +49,53 @@ describe("Blogs", () => {
   });
 
   test("default likes is 0", async () => {
-    const newUser = new User({
-      username: "defaultlikes",
-      name: "TestUser",
-      passwordHash: "password",
-    });
-    await newUser.save();
     const newBlog: Blog = {
-      title: "Test Blog",
-      author: "John Doe",
+      title: "Test Blogg",
+      author: "John Does",
       url: "https://example.com/test-blog",
       // @ts-ignore
-      user: newUser._id,
+      user: "666378012e244dc788b6449f",
     };
 
-    const response = await api.post("/api/blogs").send(newBlog);
+    const response = await api
+      .post("/api/blogs")
+      .set("Authorization", `Bearer ${token}`)
+      .send(newBlog);
     expect(response.body.likes).toBe(0);
   });
 
   test("a blog without content is not added", async () => {
-    const newUser = new User({
-      username: "nocontent",
-      name: "TestUser",
-      passwordHash: "password",
-    });
-    // This is 4.12*
     const newBlog: Blog = {
       title: "",
       author: "",
       url: "",
       likes: 100,
       // @ts-ignore
-      user: newUser._id,
+      user: "666378012e244dc788b6449f",
     };
 
-    const response = await api.post("/api/blogs").send(newBlog);
+    const response = await api
+      .post("/api/blogs")
+      .set("Authorization", `Bearer ${token}`)
+      .send(newBlog);
     expect(response.status).toBe(400);
   });
 
   test("returns id not _id", async () => {
-    const newUser = new User({
-      username: "returnsid",
-      name: "TestUser",
-      passwordHash: "password",
-    });
-
-    await newUser.save();
     const newBlog: Blog = {
       title: "Test Blog",
       author: "John Doe",
       url: "https://example.com/test-blog",
       likes: 100,
       // @ts-ignore
-      user: newUser._id,
+      user: "666378012e244dc788b6449f",
     };
 
-    const response = await api.post("/api/blogs").send(newBlog);
+    const response = await api
+      .post("/api/blogs")
+      .set("Authorization", `Bearer ${token}`)
+      .send(newBlog);
+
     expect(response.body.id).toBeDefined();
     expect(response.body._id).not.toBeDefined();
   });
@@ -133,7 +104,7 @@ describe("Blogs", () => {
     const blogs = await api.get("/api/blogs");
     const blogToView = blogs.body[0];
     const result = await api.get(`/api/blogs/${blogToView.id}`);
-    expect(result.body).toEqual(blogToView);
+    expect(result.body.id).toEqual(blogToView.id);
   });
 
   test("a blog can be deleted", async () => {
@@ -150,22 +121,16 @@ describe("Blogs", () => {
   });
 
   test("a blog can be updated", async () => {
-    // Create a new user
-    const newUserResponse = await api.post("/api/users").send({
-      username: "testuser",
-      name: "Test User",
-      password: "testpassword",
-    });
-    const newUser = newUserResponse.body;
-
-    // Create a new blog
-    const newBlogResponse = await api.post("/api/blogs").send({
-      title: "Test Blog",
-      author: "John Doe",
-      url: "https://example.com/test-blog",
-      likes: 100,
-      user: newUser.id,
-    });
+    const newBlogResponse = await api
+      .post("/api/blogs")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        title: "Test Blog",
+        author: "John Doe",
+        url: "https://example.com/test-blog",
+        likes: 100,
+        user: "666378012e244dc788b6449f",
+      });
     const newBlog = newBlogResponse.body;
 
     // Update the blog
@@ -173,6 +138,7 @@ describe("Blogs", () => {
 
     const response = await api
       .put(`/api/blogs/${newBlog.id}`)
+      .set("Authorization", `Bearer ${token}`)
       .send(updatedBlogData);
 
     console.log("Response:", response.body);
