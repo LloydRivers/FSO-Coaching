@@ -3,6 +3,10 @@ import supertest from "supertest";
 import { Blog } from "../../types/";
 import app from "../../app";
 
+/*
+All of these tests are now passing. Notice I have added the usrs tests to the jest ignore pattern, the reason is that the tests are tightly coupled. We can't delete the user without deleting the blogs. So we have to clear the database before each test. This is not a good practice. We will fix this in the next part.
+*/
+
 const api = supertest(app);
 
 let token =
