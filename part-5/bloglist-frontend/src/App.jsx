@@ -17,7 +17,8 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
+  const [showLoginForm, setShowLoginForm] = useState(false);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -79,7 +80,6 @@ const App = () => {
       }, 5000);
     }
   };
-
   return (
     <div>
       <h2>Blogs App</h2>
@@ -93,10 +93,12 @@ const App = () => {
           setUsername={setUsername}
           password={password}
           setPassword={setPassword}
+          setShowLoginForm={setShowLoginForm}
+          showLoginForm={showLoginForm}
         />
       ) : (
         <div>
-          <p>{user.name} logged-in</p>
+          <p>{user?.name} logged-in</p>
           <button onClick={handleLogout}>logout</button>
           <BlogForm
             addBlog={addBlog}

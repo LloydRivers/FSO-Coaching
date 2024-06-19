@@ -6,29 +6,41 @@ const LoginForm = ({
   setUsername,
   password,
   setPassword,
+  setShowLoginForm,
+  showLoginForm,
 }) => {
   return (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
+    <>
+      {showLoginForm ? (
+        <form
+          onSubmit={handleLogin}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            width: "200px",
+          }}
+        >
+          <input
+            value={username}
+            onChange={({ target }) => setUsername(target.value)}
+            placeholder="Username"
+          />
+          <input
+            value={password}
+            onChange={({ target }) => setPassword(target.value)}
+            placeholder="Password"
+            type="password"
+          />
+          <button type="submit">login</button>
+          <button type="button" onClick={() => setShowLoginForm(false)}>
+            cancel
+          </button>
+        </form>
+      ) : (
+        <button onClick={() => setShowLoginForm(true)}>login</button>
+      )}
+    </>
   );
 };
 
