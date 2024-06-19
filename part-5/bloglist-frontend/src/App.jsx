@@ -19,6 +19,7 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [showLoginForm, setShowLoginForm] = useState(false);
+  const [showBlogForm, setShowBlogForm] = useState(false);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -69,6 +70,7 @@ const App = () => {
         author: "",
         url: "",
       });
+      setShowBlogForm(false);
       setErrorMessage("Blog added successfully!");
       setTimeout(() => {
         setErrorMessage(null);
@@ -98,13 +100,27 @@ const App = () => {
         />
       ) : (
         <div>
-          <p>{user?.name} logged-in</p>
-          <button onClick={handleLogout}>logout</button>
-          <BlogForm
-            addBlog={addBlog}
-            newBlog={newBlog}
-            setNewBlog={setNewBlog}
-          />
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              alignItems: "center",
+              marginBottom: "10px",
+            }}
+          >
+            <p>{user?.name} logged-in</p>
+            <button onClick={handleLogout}>logout</button>
+          </div>
+          <button onClick={() => setShowBlogForm(!showBlogForm)}>
+            new blog
+          </button>
+          {showBlogForm && (
+            <BlogForm
+              addBlog={addBlog}
+              newBlog={newBlog}
+              setNewBlog={setNewBlog}
+            />
+          )}
         </div>
       )}
       {user && (
