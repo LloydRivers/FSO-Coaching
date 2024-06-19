@@ -1,14 +1,15 @@
-import React from 'react'
+import React from "react";
+import PropTypes from "prop-types";
 
 const BlogForm = ({ addBlog, newBlog, setNewBlog }) => {
   return (
     <form
       onSubmit={addBlog}
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '10px',
-        width: '200px',
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+        width: "200px",
       }}
     >
       <input
@@ -32,7 +33,13 @@ const BlogForm = ({ addBlog, newBlog, setNewBlog }) => {
       />
       <button type="submit">save</button>
     </form>
-  )
-}
+  );
+};
 
-export default BlogForm
+BlogForm.propTypes = {
+  addBlog: PropTypes.func.isRequired,
+  newBlog: PropTypes.object.isRequired,
+  setNewBlog: PropTypes.func.isRequired,
+};
+
+export default BlogForm;
