@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import blogService from "../services/blogs";
 
 const Blog = ({ blog, handleLike }) => {
   const [expanded, setExpanded] = useState(false);
