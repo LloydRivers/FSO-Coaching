@@ -68,9 +68,17 @@ export const getBlog = async (req: Request, res: Response) => {
 };
 
 export const putBlog = async (req: Request, res: Response) => {
-  const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  });
+  const { id } = req.params;
+  const { title, author, url, likes, user, ...rest } = req.body;
+
+  const userId = user.id || user;
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    id,
+    { title, author, url, likes, user: userId, ...rest },
+    {
+      new: true,
+    }
+  );
   if (!updatedBlog) {
     return res.status(404).json({ error: "Blog not found" });
   }

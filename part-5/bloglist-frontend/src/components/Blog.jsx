@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import blogService from "../services/blogs";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLike }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -17,7 +18,17 @@ const Blog = ({ blog }) => {
       {expanded && (
         <div>
           <div>URL: {blog.url}</div>
-          <div>Likes: {blog.likes}</div>
+          <div
+            style={{ display: "flex", alignItems: "center", marginTop: "10px" }}
+          >
+            <span>Likes: {blog.likes}</span>
+            <button
+              onClick={() => handleLike(blog.id)}
+              style={{ marginLeft: "10px" }}
+            >
+              Like
+            </button>
+          </div>
         </div>
       )}
       <button onClick={() => setExpanded(!expanded)}>
