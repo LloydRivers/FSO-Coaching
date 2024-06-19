@@ -44,6 +44,7 @@ const App = () => {
       setPassword("");
     } catch (error) {
       setErrorMessage("Wrong credentials");
+      console.error(error);
       setTimeout(() => {
         setErrorMessage(null);
       }, 5000);
