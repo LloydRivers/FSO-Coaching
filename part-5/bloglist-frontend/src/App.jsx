@@ -8,7 +8,11 @@ import BlogForm from "./components/BlogForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [newBlog, setNewBlog] = useState("");
+  const [newBlog, setNewBlog] = useState({
+    title: "",
+    author: "",
+    url: "",
+  });
   const [showAll, setShowAll] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [username, setUsername] = useState("");
@@ -51,8 +55,28 @@ const App = () => {
     setUser(null);
   };
 
-  const addBlog = (event) => {
+  const addBlog = async (event) => {
     event.preventDefault();
+
+    try {
+      const blog = await blogService.create(newBlog);
+      setBlogs(blogs.concat(blog));
+      setBlogs((prevBlogs) => [...prevBlogs, blog]);
+      setNewBlog({
+        title: "",
+        author: "",
+        url: "",
+      });
+      setErrorMessage("Blog added successfully!");
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+    } catch (error) {
+      setErrorMessage("Failed to add blog");
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+    }
   };
 
   return (
