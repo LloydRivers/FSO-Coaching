@@ -13,7 +13,6 @@ const App = () => {
     author: "",
     url: "",
   });
-  const [showAll, setShowAll] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -63,7 +62,6 @@ const App = () => {
 
     try {
       const blog = await blogService.create(newBlog);
-      setBlogs(blogs.concat(blog));
       setBlogs((prevBlogs) => [...prevBlogs, blog]);
       setNewBlog({
         title: "",
@@ -88,6 +86,13 @@ const App = () => {
     const updatedBlog = { ...blog, likes: blog.likes + 1 };
     await blogService.update(id, updatedBlog);
     setBlogs(blogs.map((blog) => (blog.id !== id ? blog : updatedBlog)));
+  };
+
+  const handleRemove = async (id) => {
+    if (window.confirm("Do you really want to remove this blog?")) {
+      await blogService.remove(id);
+      setBlogs(blogs.filter((blog) => blog.id !== id));
+    }
   };
   return (
     <div>
@@ -130,19 +135,17 @@ const App = () => {
           )}
         </div>
       )}
-      {/* {user && (
-        <div>
-          <button onClick={() => setShowAll(!showAll)}>
-            {showAll ? "show less" : "show all"}
-          </button>
-        </div>
-      )} */}
 
       <div>
         {blogs
           .sort((a, b) => b.likes - a.likes)
           .map((blog) => (
-            <Blog key={blog.id} blog={blog} handleLike={handleLike} />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleLike={handleLike}
+              handleRemove={handleRemove}
+            />
           ))}
       </div>
     </div>
