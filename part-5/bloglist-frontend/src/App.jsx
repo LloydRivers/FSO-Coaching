@@ -123,21 +123,19 @@ const App = () => {
           )}
         </div>
       )}
-      {user && (
+      {/* {user && (
         <div>
           <button onClick={() => setShowAll(!showAll)}>
             {showAll ? "show less" : "show all"}
           </button>
         </div>
-      )}
+      )} */}
 
-      {showAll && (
-        <div>
-          {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
-          ))}
-        </div>
-      )}
+      <div>
+        {blogs.map((blog) => (
+          <Blog key={blog.id} blog={blog} />
+        ))}
+      </div>
     </div>
   );
 };
