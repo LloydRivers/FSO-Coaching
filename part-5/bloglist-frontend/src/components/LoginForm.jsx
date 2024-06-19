@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 const LoginForm = ({
   handleLogin,
@@ -15,10 +15,10 @@ const LoginForm = ({
         <form
           onSubmit={handleLogin}
           style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            width: "200px",
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            width: '200px',
           }}
         >
           <input
@@ -41,7 +41,7 @@ const LoginForm = ({
         <button onClick={() => setShowLoginForm(true)}>login</button>
       )}
     </>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm
