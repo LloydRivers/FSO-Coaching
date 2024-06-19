@@ -55,8 +55,6 @@ const App = () => {
     event.preventDefault();
   };
 
-  console.log("rendering App...", blogs.length, "blogs");
-
   return (
     <div>
       <h2>Blogs App</h2>
