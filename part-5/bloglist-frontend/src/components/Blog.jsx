@@ -21,6 +21,7 @@ const Blog = ({ blog, handleLike }) => {
             style={{ display: "flex", alignItems: "center", marginTop: "10px" }}
           >
             <span>Likes: {blog.likes}</span>
+
             <button
               onClick={() => handleLike(blog.id)}
               style={{ marginLeft: "10px" }}
@@ -28,6 +29,7 @@ const Blog = ({ blog, handleLike }) => {
               Like
             </button>
           </div>
+          <span>{blog.user ? blog.user.name : "Unknown"}</span>
         </div>
       )}
       <button onClick={() => setExpanded(!expanded)}>
