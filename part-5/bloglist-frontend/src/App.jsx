@@ -13,7 +13,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -28,16 +28,16 @@ const App = () => {
     }
   }, []);
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
 
     try {
-      const user = loginService.login({ username, password });
+      const user = await loginService.login({ username, password });
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-      blogService.setToken(user.token);
+
+      setUser(user);
       setUsername("");
       setPassword("");
-      setUser(user);
     } catch (error) {
       setErrorMessage("Wrong credentials");
       setTimeout(() => {
@@ -55,9 +55,12 @@ const App = () => {
     event.preventDefault();
   };
 
+  console.log("rendering App...", blogs.length, "blogs");
+
   return (
     <div>
-      <h2>blogs</h2>
+      <h2>Blogs App</h2>
+
       <Notification message={errorMessage} />
 
       {user === null ? (
@@ -79,12 +82,13 @@ const App = () => {
           />
         </div>
       )}
-
-      <div>
-        <button onClick={() => setShowAll(!showAll)}>
-          {showAll ? "show less" : "show all"}
-        </button>
-      </div>
+      {user && (
+        <div>
+          <button onClick={() => setShowAll(!showAll)}>
+            {showAll ? "show less" : "show all"}
+          </button>
+        </div>
+      )}
 
       {showAll && (
         <div>
